@@ -9,7 +9,7 @@ namespace optimal_allocation_of_money
         int? CostStep;
         List<List<int?>> matrix = new List<List<int?>>();
         //
-        List<int?> StoryOptimaise = new List<int?>();
+        List<List<int?>> StoryOptimaise = new List<List<int?>>();
         List<int?>moneyInBank = new List<int?>();
         int? finction{ get; set; }
 
@@ -20,6 +20,8 @@ namespace optimal_allocation_of_money
             this.pathOut = pathOut;
 
             GetDate();
+
+            CreateStoryListMarcup();
 
             PostData();
         }
@@ -56,6 +58,19 @@ namespace optimal_allocation_of_money
                 Console.WriteLine($"{i+1}\t=\t{moneyInBank[i]}");
             }
             sw.Write($"Максимальная прибыль = {finction}%");
+        }
+
+        void CreateStoryListMarcup()
+        {
+            List<int?> temp = new List<int?>();
+            for (int i = 2; i < matrix.Count(); i++)
+            {
+                for (int? j = 0; j <= matrix[i][0]; j += CostStep)
+                {
+                    temp.Add(j);
+                }
+            }
+            StoryOptimaise.Add(new List<int?>(temp));
         }
     }
 }

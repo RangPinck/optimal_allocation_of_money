@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace optimal_allocation_of_money
+﻿namespace optimal_allocation_of_money
 {
     class method
     {
-        public List<int> numberbank = new List<int>();
-        public List<int> temp = new List<int>();
-        public List<int> money = new List<int>();
-        public List<List<int>> matrix = new List<List<int>>();
+        string pathIn;
+        string pathOut;
 
-        void GetDate()
+        List<int> numberbank = new List<int>();
+        List<int> moneyStep = new List<int>();
+        int CostStep;
+        List<List<int>> matrix = new List<List<int>>();
+        List<int> StoryOptimaise = new List<int>();
+
+        void GetDate(string pathIn)
         {
 
         }

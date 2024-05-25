@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.Text;
 
 namespace optimal_allocation_of_money
 {
@@ -9,7 +8,7 @@ namespace optimal_allocation_of_money
         string pathOut { get; set; }
         int? CostStep;
         List<List<int?>> matrix = new List<List<int?>>();
-        //0 - статусы; i - сумма процентов; i+1 - индексация максимальной суммы (1 - сумма максимальная; null - нет); i+2 - запись значений
+        //0 - статусы; i - сумма процентов; i+1 - индексация максимальной суммы (1 - сумма максимальная; null - нет)
         List<List<int?>> StoryOptimaise = new List<List<int?>>();
         List<int?> moneyInBank = new List<int?>();
         int? finction { get; set; }
@@ -87,8 +86,6 @@ namespace optimal_allocation_of_money
             }
 
             GetMaxInCategory();
-
-            GetCostContributionInCategory();
         }
 
         void SumProcentFirst()
@@ -147,11 +144,6 @@ namespace optimal_allocation_of_money
             }
 
             StoryOptimaise.Add(new List<int?>(temp));
-        }
-
-        void GetCostContributionInCategory()
-        {
-
         }
     }
 }

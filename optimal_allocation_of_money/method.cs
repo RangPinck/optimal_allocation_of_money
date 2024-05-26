@@ -12,6 +12,7 @@ namespace optimal_allocation_of_money
         List<List<int?>> StoryOptimaise = new List<List<int?>>();
         List<int?> moneyInBank = new List<int?>();
         int? finction { get; set; }
+        int indexWorkingBank { get; set; }
 
         public method(string pathIn, string pathOut)
         {
@@ -48,6 +49,7 @@ namespace optimal_allocation_of_money
                 temp.Clear();
             }
             CostStep = matrix[2][0] - matrix[1][0];
+            indexWorkingBank = matrix[0].Count - 1;
         }
 
         void PostData()
@@ -76,16 +78,26 @@ namespace optimal_allocation_of_money
 
         void CreateStory()
         {
+
             if (StoryOptimaise.Count == 1)
             {
                 SumProcentFirst();
+                indexWorkingBank -= 2;
             }
             else
             {
                 SumProcent();
+                indexWorkingBank--;
             }
 
             GetMaxInCategory();
+
+            if (indexWorkingBank == 0)
+            {
+                
+            }
+
+            CreateStory();
         }
 
         void SumProcentFirst()
@@ -94,15 +106,13 @@ namespace optimal_allocation_of_money
 
             List<int?> temp = new List<int?>();
 
-            int IndexLastBank = (int)matrix[0][matrix[0].Count - 1];
-
             for (int i = 0; i < StoryOptimaise[0].Count; i++)
             {
                 if (StoryOptimaise[0][i] == 0) CountSteps++;
 
                 temp.Add(
-                    GetProcentContribution(IndexLastBank - 1, 1 + StoryOptimaise[0][i] / CostStep) +
-                    GetProcentContribution(IndexLastBank, 1 + (matrix[CountSteps][0] - StoryOptimaise[0][i]) / CostStep)
+                    GetProcentContribution(indexWorkingBank - 1, 1 + StoryOptimaise[0][i] / CostStep) +
+                    GetProcentContribution(indexWorkingBank, 1 + (matrix[CountSteps][0] - StoryOptimaise[0][i]) / CostStep)
                     );
             }
 
@@ -114,21 +124,49 @@ namespace optimal_allocation_of_money
 
         void SumProcent()
         {
+            int CountSteps = 1;
 
+            List<int?> temp = new List<int?>();
+
+
+
+            for (int i = 0; i < StoryOptimaise[0].Count; i++)
+            {
+                if (StoryOptimaise[0][i] == 0) CountSteps++;
+
+                temp.Add(
+                    GetProcentContribution(indexWorkingBank, 1 + StoryOptimaise[0][i] / CostStep) +
+                    GetProcentContributionFromStory(matrix[CountSteps][0] - StoryOptimaise[0][i])
+                    );
+            }
+
+            StoryOptimaise.Add(new List<int?>(temp));
+        }
+
+        int? GetProcentContributionFromStory(int? contribytionInStory)
+        {
+            if (contribytionInStory == 0) return 0;
+
+            int? CountElementsInCategory = 1 + contribytionInStory / CostStep;
+            int? indexStartCategory = 0;
+
+            for (int i = 2; i < CountElementsInCategory; i++)
+            {
+                indexStartCategory += i;
+            }
+
+            return StoryOptimaise[StoryOptimaise.Count - 2].GetRange((int)indexStartCategory, (int)CountElementsInCategory).Max();
         }
 
         void GetMaxInCategory()
         {
             List<int?> temp = new List<int?>();
-
             int? maxInCategory = 0;
             int indexStartCategory = 0;
             int CountElementsInCategory = 2;
-
             for (int i = 0; i < matrix.Count - 2; i++)
             {
                 maxInCategory = StoryOptimaise[StoryOptimaise.Count - 1].GetRange(indexStartCategory, CountElementsInCategory).Max();
-
                 for (int j = indexStartCategory; j < indexStartCategory+CountElementsInCategory; j++)
                 {
                     if (StoryOptimaise[StoryOptimaise.Count - 1][j] == maxInCategory)
@@ -138,11 +176,9 @@ namespace optimal_allocation_of_money
                     }
                     temp.Add(null);
                 }
-
                 indexStartCategory += CountElementsInCategory;
                 CountElementsInCategory++;
             }
-
             StoryOptimaise.Add(new List<int?>(temp));
         }
     }
